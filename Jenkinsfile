@@ -29,6 +29,20 @@ pipeline {
             }
         }
     }       
+        post {
+        success {
+            mail to:"ruban.yuvaraj@gmail.com", subject:"SUCCESS: ${currentBuild.fullDisplayName}", body: "Yay, we passed."
+        }
+        failure {
+            mail to:"ruban.yuvaraj@gmail.com", subject:"FAILURE: ${currentBuild.fullDisplayName}", body: "Boo, we failed."
+        }
+        unstable {
+            mail to:"ruban.yuvaraj@gmail.com", subject:"UNSTABLE: ${currentBuild.fullDisplayName}", body: "Huh, we're unstable."
+        }
+        changed {
+            mail to:"ruban.yuvaraj@gmail.com", subject:"CHANGED: ${currentBuild.fullDisplayName}", body: "Wow, our status changed!"
+        }
+    }
 }
 
 def notifyStarted() {
