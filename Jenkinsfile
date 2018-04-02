@@ -1,18 +1,14 @@
 pipeline {
     agent any   
-
     stages {
-        stage ('Compile Stage') {
-            
+        stage ('Compile Stage') {   
             steps {
-                mail to:"ruban.yuvaraj@gmail.com", subject: "STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'", body: "STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'"
-                   
+                mail to:"ruban.yuvaraj@gmail.com", subject: "STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'", body: "STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'"                   
                 withMaven(maven : 'maven_3_5_0') {
                     sh 'mvn clean compile'
                 }
             }
         }
-
         stage ('Testing Stage') {
             steps {
                 withMaven(maven : 'maven_3_5_0') {
@@ -20,13 +16,11 @@ pipeline {
                 }
             }
         }
-
         stage ('Deployment Stage') {
             steps {
                 withMaven(maven : 'maven_3_5_0') {
                     sh 'mvn deploy'
                 }
-                //notifySuccessful()
             }
         }
     }       
