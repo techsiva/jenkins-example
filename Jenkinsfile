@@ -26,6 +26,14 @@ pipeline {
                 withMaven(maven : 'maven_3_5_0') {
                     sh 'mvn deploy'
                 }
+            publishHTML (target: [ 
+                allowMissing: false, 
+                alwaysLinkToLastBuild: false, 
+                keepAll: true, 
+                reportDir: 'coverage', 
+                reportFiles: 'index.html', 
+                reportName: "RCov Report" 
+            ]) 
             }
         }
     }
