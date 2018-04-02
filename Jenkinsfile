@@ -28,11 +28,21 @@ pipeline {
                 notifySuccessful()
             }
         }
+        stage('Send email') {
+    def mailRecipients = "ruban.yuvaraj@gmail.com"
+    def jobName = currentBuild.fullDisplayName
+
+    emailext body: '''${SCRIPT, template="groovy-html.template"}''',
+        mimeType: 'text/html',
+        subject: "[Jenkins] ${jobName}",
+        to: "${mailRecipients}",
+        replyTo: "${mailRecipients}",
+        recipientProviders: [[$class: 'CulpritsRecipientProvider']]
+}
     }
         
 
 }
-def mailRecipients = "ruban.yuvaraj@gmail   .com"
 
 def notifyStarted() {
    // send to email
