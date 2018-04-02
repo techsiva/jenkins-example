@@ -5,7 +5,11 @@ pipeline {
         stage ('Compile Stage') {
             
             steps {
-               // notifyStarted()
+                mail to:"ruban.yuvaraj@gmail.com", 
+                subject: "STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
+                body: """<p>STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p>
+                <p>Check console output at "<a href="${env.BUILD_URL}">${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>"</p>""",
+                    
                 withMaven(maven : 'maven_3_5_0') {
                     sh 'mvn clean compile'
                 }
@@ -31,48 +35,29 @@ pipeline {
     }       
         post {
         success {
-            mail to:"ruban.yuvaraj@gmail.com", subject:"SUCCESS: ${currentBuild.fullDisplayName}", body: "Yay, we passed."
+            mail to:"ruban.yuvaraj@gmail.com",
+                 subject: "SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
+                 body: """<p>SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p>
+                 <p>Check console output at "<a href="${env.BUILD_URL}">${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>"</p>""",
         }
         failure {
-            mail to:"ruban.yuvaraj@gmail.com", subject:"FAILURE: ${currentBuild.fullDisplayName}", body: "Boo, we failed."
+            mail to:"ruban.yuvaraj@gmail.com",
+                 subject: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
+                 body: """<p>FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p>
+                 <p>Check console output at "<a href="${env.BUILD_URL}">${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>"</p>""",           
         }
         unstable {
-            mail to:"ruban.yuvaraj@gmail.com", subject:"UNSTABLE: ${currentBuild.fullDisplayName}", body: "Huh, we're unstable."
+            mail to:"ruban.yuvaraj@gmail.com", 
+                 subject:"UNSTABLE: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'"
+                 body: """<p>UNSTABLE: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p>
+                 <p>Check console output at "<a href="${env.BUILD_URL}">${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>"</p>""",           
+        }
         }
         changed {
-            mail to:"ruban.yuvaraj@gmail.com", subject:"CHANGED: ${currentBuild.fullDisplayName}", body: "Wow, our status changed!"
+            mail to:"ruban.yuvaraj@gmail.com",
+                 subject:"CHANGED: ${currentBuild.fullDisplayName}", 
+                 body: """<p>CHANGED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p>
+                 <p>Check console output at "<a href="${env.BUILD_URL}">${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>"</p>""",           
         }
     }
 }
-
-def notifyStarted() {
-   // send to email
-   emailext ( 
-       subject: "STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'", 
-       body: """<p>STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p>
-         <p>Check console output at "<a href="${env.BUILD_URL}">${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>"</p>""",
-       recipientProviders: "ruban.yuvaraj@gmail.com"
-     )
- }
-
- def notifySuccessful() {
-   emailext (
-       subject: "SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
-       body: """<p>SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p>
-         <p>Check console output at "<a href="${env.BUILD_URL}">${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>"</p>""",
-       to: "${mailRecipients}",
-       replyTo: "${mailRecipients}",
-       recipientProviders: "ruban.yuvaraj@gmail.com"
-     )
- }
-
- def notifyFailed() {
-   emailext (
-       subject: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
-       body: """<p>FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p>
-         <p>Check console output at "<a href="${env.BUILD_URL}">${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>"</p>""",
-       to: "${mailRecipients}",
-       replyTo: "${mailRecipients}",
-       recipientProviders: "ruban.yuvaraj@gmail.com"
-     )
- }
