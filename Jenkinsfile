@@ -28,20 +28,7 @@ pipeline {
                 notifySuccessful()
             }
         }
-        stage('Send email') {
-    def mailRecipients = "ruban.yuvaraj@gmail.com"
-    def jobName = currentBuild.fullDisplayName
-
-    emailext body: '''${SCRIPT, template="groovy-html.template"}''',
-        mimeType: 'text/html',
-        subject: "[Jenkins] ${jobName}",
-        to: "${mailRecipients}",
-        replyTo: "${mailRecipients}",
-        recipientProviders: [[$class: 'CulpritsRecipientProvider']]
-}
-    }
-        
-
+    }       
 }
 
 def notifyStarted() {
@@ -50,9 +37,7 @@ def notifyStarted() {
        subject: "STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'", 
        body: """<p>STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p>
          <p>Check console output at "<a href="${env.BUILD_URL}">${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>"</p>""",
-       to: "${mailRecipients}",
-       replyTo: "${mailRecipients}",
-       recipientProviders: [[$class: 'DevelopersRecipientProvider']]
+       recipientProviders: "ruban.yuvaraj@gmail.com"
      )
  }
 
@@ -63,7 +48,7 @@ def notifyStarted() {
          <p>Check console output at "<a href="${env.BUILD_URL}">${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>"</p>""",
        to: "${mailRecipients}",
        replyTo: "${mailRecipients}",
-       recipientProviders: [[$class: 'DevelopersRecipientProvider']]
+       recipientProviders: "ruban.yuvaraj@gmail.com"
      )
  }
 
@@ -74,6 +59,6 @@ def notifyStarted() {
          <p>Check console output at "<a href="${env.BUILD_URL}">${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>"</p>""",
        to: "${mailRecipients}",
        replyTo: "${mailRecipients}",
-       recipientProviders: [[$class: 'DevelopersRecipientProvider']]
+       recipientProviders: "ruban.yuvaraj@gmail.com"
      )
  }
