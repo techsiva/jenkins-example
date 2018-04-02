@@ -3,8 +3,9 @@ pipeline {
 
     stages {
         stage ('Compile Stage') {
-            notifyStarted()
+            
             steps {
+                notifyStarted()
                 withMaven(maven : 'maven_3_5_0') {
                     sh 'mvn clean compile'
                 }
@@ -24,7 +25,7 @@ pipeline {
                 withMaven(maven : 'maven_3_5_0') {
                     sh 'mvn deploy'
                 }
-            notifySuccessful()
+                notifySuccessful()
             }
         }
     }
