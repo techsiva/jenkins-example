@@ -22,6 +22,11 @@ pipeline {
                     sh 'mvn deploy'
                 }
             }
+        stage('Report') {
+            steps {
+               junit(testResults: 'target/surefire-reports/**/*.xml')
+               archiveArtifacts 'target/*.jar,target/*.hpi'
+            }
         }
     }       
         post {
