@@ -1,4 +1,4 @@
-    @Library("jenkins-shared-library") _
+    @Library("Multipipeline") _
     standardPipeline {
         projectName = "shared-example"
     }
